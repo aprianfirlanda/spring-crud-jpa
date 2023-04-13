@@ -1,6 +1,7 @@
 package com.aprianfirlanda.entities;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.Size;
 
 import java.util.LinkedHashSet;
@@ -24,6 +25,18 @@ public class User {
 
     @OneToMany(mappedBy = "manager")
     private Set<Project> projects = new LinkedHashSet<>();
+
+    @Email(message = "Incorrect email")
+    @Column(name = "email", unique = true)
+    private String email;
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
 
     public Long getId() {
         return id;
