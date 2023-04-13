@@ -1,12 +1,12 @@
 package com.aprianfirlanda.controllers;
 
 import com.aprianfirlanda.dtos.ProjectDto;
+import com.aprianfirlanda.entities.Project;
 import com.aprianfirlanda.mappers.ProjectMapper;
 import com.aprianfirlanda.repositories.ProjectRepository;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotNull;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -30,5 +30,11 @@ public class ProjectController {
                 .stream()
                 .map(projectMapper::toDto)
                 .collect(Collectors.toList());
+    }
+
+    @PostMapping("/new")
+    public ProjectDto saveProject(@RequestBody @NotNull @Valid ProjectDto projectDto) {
+        Project project = projectMapper.toEntity(projectDto);
+        return projectMapper.toDto(projectRepository.save(project));
     }
 }
