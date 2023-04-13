@@ -37,4 +37,15 @@ public class ProjectController {
         Project project = projectMapper.toEntity(projectDto);
         return projectMapper.toDto(projectRepository.save(project));
     }
+
+    @PutMapping("/update")
+    public ProjectDto updateProject(@RequestBody @NotNull @Valid ProjectDto projectDto) {
+        if (projectDto.getId() == null) {
+            throw new IllegalArgumentException("Project ID is Missing. Use /new to create a project");
+        }
+
+        Project project = projectRepository.findById(projectDto.getId()).orElseThrow();
+        Project updatedProject = projectMapper.partialUpdate(projectDto, project);
+        return projectMapper.toDto(projectRepository.save(updatedProject));
+    }
 }
